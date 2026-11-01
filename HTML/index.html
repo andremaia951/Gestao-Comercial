@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sistema demonstrativo de gestão comercial para lojas e pequenos comércios.">
+    <title>Varejo+ | Gestão da Loja</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <script src="../JavaScript/script.js" defer></script>
+</head>
+<body>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">V+</div>
+            <div class="brand-info"><h1>Varejo+</h1><span>Gestão da loja</span></div>
+        </div>
+
+        <div class="sidebar-section">
+            <span class="sidebar-title">LOJA & CAIXA</span>
+            <nav class="sidebar-nav" aria-label="Menu principal">
+                <a href="#inicio" class="nav-link active" data-module="Início" data-view="home" aria-current="page"><span class="nav-icon">⌂</span><span>Início</span></a>
+                <a href="#vendas" class="nav-link" data-module="Vendas" data-view="sales"><span class="nav-icon">▤</span><span>Vendas</span></a>
+                <a href="#produtos" class="nav-link" data-module="Produtos" data-view="products"><span class="nav-icon">▦</span><span>Produtos</span></a>
+                <a href="#documentos" class="nav-link" data-module="Comprovantes e impressão" data-view="documents"><span class="nav-icon">▧</span><span>Comprovantes e impressão</span></a>
+                <a href="#entregas" class="nav-link" data-module="Entregas" data-view="deliveries"><span class="nav-icon">♧</span><span>Entregas</span></a>
+            </nav>
+        </div>
+
+        <div class="sidebar-section">
+            <span class="sidebar-title">GESTÃO & CONSULTAS</span>
+            <nav class="sidebar-nav" aria-label="Consultas e controle">
+                <a href="#historico" class="nav-link" data-module="Histórico de vendas" data-view="history"><span class="nav-icon">▣</span><span>Histórico de vendas</span></a>
+                <a href="#relatorios" class="nav-link" data-module="Relatórios" data-view="reports"><span class="nav-icon">▥</span><span>Relatórios</span></a>
+                <a href="#logs" class="nav-link" data-module="Registros do sistema" data-view="logs"><span class="nav-icon">◷</span><span>Registros do sistema</span></a>
+                <a href="#configuracoes" class="nav-link" data-module="Configurações" data-view="settings"><span class="nav-icon">⚙</span><span>Configurações</span></a>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <span class="connection-indicator" id="storage-indicator"></span>
+            <div><strong>Banco local</strong><span id="storage-status">Dados salvos neste navegador</span></div>
+        </div>
+    </aside>
+
+    <div class="main-area">
+        <header class="topbar">
+            <div class="breadcrumb"><span>Início</span><span class="breadcrumb-separator">/</span><strong id="breadcrumb-current">Início</strong></div>
+            <div class="topbar-right">
+                <button class="icon-button" id="notification-button" type="button" aria-label="Notificações" title="Notificações">♧</button>
+                <div class="user-profile"><div class="user-avatar">OP</div><div class="user-info"><strong>Operador</strong><span>Ambiente de demonstração</span></div></div>
+            </div>
+        </header>
+
+        <main class="page-content">
+            <section class="page-view" id="view-products" hidden>
+
+            <section class="page-heading">
+                <div>
+                    <span class="page-eyebrow">ESTOQUE / CATÁLOGO</span>
+                    <h2>Produtos</h2>
+                    <p>Gerencie os itens, preços e quantidades do seu comércio.</p>
+                </div>
+                <button class="primary-button" id="new-product-button" type="button"><span class="button-plus">+</span>Novo produto</button>
+            </section>
+
+            <section class="information-banner">
+                <div class="information-icon">i</div>
+                <div><strong>Organização do catálogo</strong><p>Use categorias, subcategorias e características específicas para manter os produtos organizados.</p></div>
+            </section>
+
+            <section class="content-panel" aria-labelledby="catalog-title">
+                <div class="panel-heading">
+                    <div><h3 id="catalog-title">Catálogo de produtos <span class="count-inline" id="product-count">0</span></h3><p>Consulte, cadastre e organize os itens.</p></div>
+                    <span class="catalog-label">Lista de produtos</span>
+                </div>
+
+                <div class="filters-container">
+                    <div class="search-field">
+                        <label for="product-search">Pesquisar produto</label>
+                        <div class="input-wrapper"><span class="search-icon" aria-hidden="true">⌕</span><input type="search" id="product-search" placeholder="Nome, código ou código de barras..." autocomplete="off"></div>
+                    </div>
+                    <div class="filter-field">
+                        <label for="category-filter">Categoria</label>
+                        <select id="category-filter">
+                            <option value="all">Todas as categorias</option>
+                            <option value="uncategorized">Sem categoria</option>
+                            <option value="food">Mercearia</option>
+                            <option value="produce">Hortifruti</option>
+                            <option value="dairy">Frios e laticínios</option>
+                            <option value="bakery">Padaria</option>
+                            <option value="beverages">Bebidas</option>
+                            <option value="frozen">Congelados</option>
+                            <option value="cleaning">Limpeza</option>
+                            <option value="personal">Higiene pessoal</option>
+                            <option value="household">Utilidades</option>
+                        </select>
+                    </div>
+                    <div class="filter-field">
+                        <label for="subcategory-filter">Subcategoria</label>
+                        <select id="subcategory-filter"><option value="all">Todas as subcategorias</option></select>
+                    </div>
+                </div>
+
+                <div class="list-toolbar">
+                    <div class="list-description"><strong>Produtos cadastrados</strong><span id="list-summary">Carregando produtos...</span></div>
+                    <div class="column-control">
+                        <button class="secondary-button" id="customize-columns-button" type="button" aria-expanded="false" aria-controls="column-panel">⚙ Personalizar exibição</button>
+                        <div class="column-panel" id="column-panel" hidden>
+                            <strong>Colunas visíveis</strong>
+                            <label><input type="checkbox" data-column-toggle="subcategory" checked> Variação / detalhes</label>
+                            <label><input type="checkbox" data-column-toggle="unit" checked> Unidade</label>
+                            <label><input type="checkbox" data-column-toggle="stock" checked> Estoque</label>
+                            <label><input type="checkbox" data-column-toggle="cash" checked> Preço à vista</label>
+                            <label><input type="checkbox" data-column-toggle="card" checked> Preço normal (cartão)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead><tr>
+                            <th data-column="product">PRODUTO</th>
+                            <th data-column="category">CATEGORIA</th>
+                            <th data-column="subcategory">DETALHES</th>
+                            <th data-column="unit">UNIDADE</th>
+                            <th data-column="stock">ESTOQUE</th>
+                            <th data-column="cash">À VISTA</th>
+                            <th data-column="card">CARTÃO</th>
+                            <th data-column="actions">AÇÕES</th>
+                        </tr></thead>
+                        <tbody id="products-table-body"></tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <span id="table-status">Catálogo demonstrativo: edite os preços e o estoque conforme sua loja.</span>
+                    <div class="pagination">
+                        <button type="button" id="previous-page" disabled>Anterior</button>
+                        <span class="current-page" id="page-indicator">1</span>
+                        <button type="button" id="next-page" disabled>Próximo</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="variation-information">
+                <div class="variation-icon">⚖</div>
+                <div><strong>Produtos vendidos por peso</strong><p>Itens como frutas, verduras, frios e carnes podem ser cadastrados com unidade em quilo. Informe a quantidade fracionada na venda, como 0,450 kg.</p></div>
+            </section>
+
+            <footer class="page-footer"><span>Varejo+ · Gestão da loja</span><span>Projeto demonstrativo de desenvolvimento</span></footer>
+
+            </section>
+
+
+            <!-- INÍCIO -->
+            <section class="page-view" id="view-home">
+                <section class="page-heading">
+                    <div><span class="page-eyebrow">PAINEL DO COMÉRCIO</span><h2>Painel da loja</h2><p>Resumo da operação e atalhos para o atendimento do dia.</p></div>
+                    <button class="primary-button" type="button" data-go-view="sales"><span class="button-plus">+</span>Nova venda</button>
+                </section>
+                <section class="market-hero">
+                    <div class="market-hero-copy">
+                        <span class="market-hero-kicker">BEM-VINDO AO VAREJO+</span>
+                        <h3>Sua loja em movimento.</h3>
+                        <p>Organize o estoque, atenda seus clientes e acompanhe cada venda em um só lugar.</p>
+                        <div class="market-hero-pills"><span>● Caixa rápido</span><span>● Catálogo organizado</span><span>● Controle local</span></div>
+                    </div>
+                    <button class="market-hero-button" type="button" data-go-view="sales"><span>＋</span> Abrir frente de caixa</button>
+                    <div class="market-hero-stamp" aria-hidden="true"><span>V+</span><small>GESTÃO<br>SIMPLIFICADA</small></div>
+                </section>
+                <div class="demo-price-note"><span></span> Catálogo de mercado para demonstração · valores ilustrativos e editáveis</div>
+                <div class="stats-grid">
+                    <article class="stat-card"><span>Vendas registradas</span><strong id="home-sales-count">0</strong><small>Registros neste navegador</small></article>
+                    <article class="stat-card"><span>Total vendido hoje</span><strong id="home-sales-total">R$ 0,00</strong><small>Considerando as vendas finalizadas</small></article>
+                    <article class="stat-card"><span>Entregas pendentes</span><strong id="home-deliveries-count">0</strong><small>Vendas com via de entrega criada</small></article>
+                    <article class="stat-card"><span>Produtos cadastrados</span><strong id="home-products-count">0</strong><small>Itens disponíveis no catálogo</small></article>
+                </div>
+                <section class="content-panel home-shortcuts">
+                    <div class="panel-heading"><div><h3>Atalhos da operação</h3><p>Comece uma venda ou encontre rapidamente uma função.</p></div></div>
+                    <div class="shortcut-grid">
+                        <button class="shortcut-card" type="button" data-go-view="sales"><span class="shortcut-icon">▤</span><strong>Frente de caixa</strong><small>Registrar itens, receber pagamentos e concluir a venda.</small></button>
+                        <button class="shortcut-card" type="button" data-go-view="products"><span class="shortcut-icon">▦</span><strong>Estoque e produtos</strong><small>Conferir preços, categorias e quantidades disponíveis.</small></button>
+                        <button class="shortcut-card" type="button" data-go-view="documents"><span class="shortcut-icon">▧</span><strong>Imprimir comprovantes</strong><small>Localizar uma venda pelo número e imprimir suas vias.</small></button>
+                        <button class="shortcut-card" type="button" data-go-view="deliveries"><span class="shortcut-icon">♧</span><strong>Consultar entregas</strong><small>Ver pedidos com endereço e situação da entrega.</small></button>
+                    </div>
+                </section>
+                <section class="content-panel home-recent">
+                    <div class="panel-heading"><div><h3>Vendas recentes</h3><p>Últimas vendas finalizadas neste projeto.</p></div><button class="secondary-button" type="button" data-go-view="history">Ver histórico</button></div>
+                    <div id="home-recent-sales" class="empty-state compact-empty">Nenhuma venda foi finalizada ainda.</div>
+                </section>
+            </section>
+
+            <!-- VENDAS: pesquisar produto, informar quantidade, adicionar à lista e finalizar -->
+            <section class="page-view" id="view-sales" hidden>
+                <section class="page-heading">
+                    <div><span class="page-eyebrow">OPERAÇÃO / VENDAS</span><h2>Nova venda</h2><p>Registre os produtos do cliente, confira o carrinho e finalize o pagamento.</p></div>
+                    <span class="catalog-label">Venda em andamento</span>
+                </section>
+                <section class="information-banner sales-info-banner"><div class="information-icon">i</div><div><strong>A impressão é feita depois</strong><p>Ao finalizar, a venda recebe um número. Para imprimir a via do cliente ou a via de entrega, acesse “Comprovantes e impressão” e procure esse número.</p></div></section>
+
+                <section class="content-panel sale-entry-panel">
+                    <div class="panel-heading"><div><h3>Adicionar produto à venda</h3><p>Leia o código ou pesquise o item. Informe a quantidade ou o peso e adicione ao carrinho.</p></div></div>
+                    <div class="sale-entry-form">
+                        <div class="sale-product-picker">
+                            <label for="sale-product-search">Produto</label>
+                            <div class="input-wrapper"><span class="search-icon" aria-hidden="true">⌕</span><input type="search" id="sale-product-search" placeholder="Digite o nome ou código do produto..." autocomplete="off"></div>
+                            <div class="sale-suggestions" id="sale-product-suggestions" hidden></div>
+                            <div class="selected-product-hint" id="selected-product-hint">Nenhum produto selecionado.</div>
+                        </div>
+                        <div class="sale-measurement-fields" id="sale-measurement-fields">
+                            <div class="sale-quantity-field" id="sale-quantity-field">
+                                <label for="sale-quantity" id="sale-quantity-label">Quantidade</label>
+                                <input id="sale-quantity" type="number" min="0.01" step="0.01" value="1" inputmode="decimal">
+                            </div>
+                            <div class="sale-measure-field" id="sale-linear-length-field" hidden>
+                                <label for="sale-length-each">Medida de cada unidade (m)</label>
+                                <input id="sale-length-each" type="number" min="0.01" step="0.01" placeholder="Ex.: 3,50" inputmode="decimal">
+                            </div>
+                            <div class="sale-measure-note" id="sale-area-coverage-field" hidden>
+                                <strong id="sale-area-coverage-title">Área por unidade</strong>
+                                <span id="sale-area-coverage-value">Cada unidade corresponde a — m².</span>
+                            </div>
+                            <div class="sale-measure-preview" id="sale-measure-preview" hidden aria-live="polite"></div>
+                        </div>
+                        <button class="primary-button add-to-sale-button" id="add-sale-item" type="button" disabled>Adicionar à lista</button>
+                    </div>
+                </section>
+
+                <section class="content-panel current-sale-panel">
+                    <div class="panel-heading sale-cart-heading"><div><h3>Lista da venda <span class="count-inline" id="sale-item-count">0 itens</span></h3><p>Os produtos adicionados permanecem aqui até a venda ser finalizada ou limpa.</p></div><button class="text-danger-button" id="clear-sale-button" type="button" disabled>Limpar lista</button></div>
+                    <div class="table-container sale-cart-table-wrap">
+                        <table class="sale-cart-table"><thead><tr><th>PRODUTO / CÁLCULO</th><th>UNIDADE DE COBRANÇA</th><th>PREÇO UNITÁRIO</th><th>QUANTIDADE / MEDIDA</th><th>SUBTOTAL</th><th></th></tr></thead><tbody id="sale-cart-body"></tbody></table>
+                    </div>
+                    <div class="empty-state" id="sale-cart-empty"><div class="empty-state-icon">▤</div><strong>A lista está vazia</strong><span>Pesquise um produto, informe a quantidade e, quando necessário, o comprimento ou a área. Depois clique em “Adicionar à lista”.</span></div>
+                    <div class="sale-summary-area">
+                        <div class="sale-payment-choice">
+                            <strong>Forma de pagamento</strong><span>O preço à vista vale para dinheiro e Pix. O cartão utiliza o preço normal cadastrado no produto.</span>
+                            <div class="payment-options">
+                                <label class="payment-option"><input type="radio" name="sale-payment" value="money" checked><span>Dinheiro</span></label>
+                                <label class="payment-option"><input type="radio" name="sale-payment" value="pix"><span>Pix</span></label>
+                                <label class="payment-option"><input type="radio" name="sale-payment" value="card"><span>Cartão</span></label>
+                            </div>
+                            <div class="extra-discount-panel">
+                                <strong>Desconto adicional</strong>
+                                <span>Use somente quando houver autorização. O desconto é aplicado ao total desta venda e não altera os preços cadastrados.</span>
+                                <div class="extra-discount-fields">
+                                    <select id="sale-discount-type" aria-label="Tipo de desconto adicional"><option value="amount">Valor em reais (R$)</option><option value="percent">Porcentagem (%)</option></select>
+                                    <input id="sale-discount-value" type="number" min="0" step="0.01" value="0" inputmode="decimal" aria-label="Valor do desconto adicional">
+                                </div>
+                                <small id="sale-discount-preview">Desconto adicional: R$ 0,00</small>
+                            </div>
+                        </div>
+                        <div class="sale-total-box"><span>Total da venda</span><strong id="sale-total">R$ 0,00</strong><small id="sale-price-mode">Preço à vista</small><button class="primary-button finalize-sale-button" id="finalize-sale-button" type="button" disabled>Finalizar venda</button></div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- PESQUISA E IMPRESSÃO SEPARADAS DA FINALIZAÇÃO DA VENDA -->
+            <section class="page-view" id="view-documents" hidden>
+                <section class="page-heading"><div><span class="page-eyebrow">VENDAS / DOCUMENTOS</span><h2>Comprovantes e impressão</h2><p>Localize a venda pelo número e escolha qual documento deseja imprimir.</p></div><span class="catalog-label">Impressora comum · meia folha</span></section>
+                <section class="information-banner"><div class="information-icon">i</div><div><strong>Duas vias com finalidades diferentes</strong><p>A via do cliente contém os valores da venda. A via de entrega reaproveita automaticamente os produtos e quantidades, acrescentando os dados do destinatário e do endereço.</p></div></section>
+                <section class="content-panel documents-panel">
+                    <div class="panel-heading"><div><h3>Localizar venda</h3><p>Digite o número gerado quando a venda foi finalizada.</p></div></div>
+                    <div class="document-search-row"><div class="search-field"><label for="documents-search">Número da venda</label><div class="input-wrapper"><span class="search-icon">⌕</span><input id="documents-search" type="search" placeholder="Ex.: VD-2026-000001" autocomplete="off"></div></div><button class="secondary-button" id="clear-documents-search" type="button">Limpar pesquisa</button></div>
+                    <div class="document-results" id="documents-results"></div>
+                </section>
+            </section>
+
+            <!-- ENTREGAS -->
+            <section class="page-view" id="view-deliveries" hidden>
+                <section class="page-heading"><div><span class="page-eyebrow">LOGÍSTICA / ACOMPANHAMENTO</span><h2>Entregas</h2><p>Consulte as vendas que já possuem dados de entrega e acompanhe a situação.</p></div></section>
+                <section class="content-panel"><div class="panel-heading"><div><h3>Entregas cadastradas</h3><p>Os itens e quantidades vêm da venda original; aqui ficam os dados do destinatário e o andamento.</p></div></div><div id="deliveries-list" class="document-results"></div></section>
+            </section>
+
+            <!-- HISTÓRICO -->
+            <section class="page-view" id="view-history" hidden>
+                <section class="page-heading"><div><span class="page-eyebrow">CONSULTAS / MOVIMENTAÇÃO</span><h2>Histórico de vendas</h2><p>Consulte vendas finalizadas e abra a área de impressão pelo número do registro.</p></div></section>
+                <section class="content-panel"><div class="document-search-row"><div class="search-field"><label for="history-search">Pesquisar venda</label><div class="input-wrapper"><span class="search-icon">⌕</span><input id="history-search" type="search" placeholder="Número da venda ou forma de pagamento..."></div></div></div><div id="history-results" class="document-results"></div></section>
+            </section>
+
+            <!-- RELATÓRIOS -->
+            <section class="page-view" id="view-reports" hidden>
+                <section class="page-heading"><div><span class="page-eyebrow">CONSULTAS / RESULTADOS</span><h2>Relatórios</h2><p>Resumo das vendas que foram registradas neste protótipo.</p></div></section>
+                <div class="stats-grid"><article class="stat-card"><span>Vendas registradas</span><strong id="report-sales-count">0</strong><small>Total de registros</small></article><article class="stat-card"><span>Valor total vendido</span><strong id="report-sales-total">R$ 0,00</strong><small>Soma das vendas finalizadas</small></article><article class="stat-card"><span>Pagamentos à vista</span><strong id="report-cash-total">R$ 0,00</strong><small>Dinheiro e Pix</small></article><article class="stat-card"><span>Pagamentos no cartão</span><strong id="report-card-total">R$ 0,00</strong><small>Preço normal (cartão)</small></article></div>
+                <section class="information-banner"><div class="information-icon">i</div><div><strong>Relatório demonstrativo</strong><p>Os números são calculados a partir das vendas salvas neste navegador. Relatórios financeiros completos serão ampliados quando o banco de dados for integrado.</p></div></section>
+            </section>
+
+            <!-- REGISTROS DO SISTEMA -->
+            <section class="page-view" id="view-logs" hidden>
+                <section class="page-heading">
+                    <div><span class="page-eyebrow">SISTEMA / AUDITORIA</span><h2>Registros do sistema</h2><p>Consulte ações importantes realizadas no programa, como cadastros, vendas, entregas e impressões.</p></div>
+                    <button class="secondary-button" id="refresh-logs-button" type="button">↻ Atualizar registros</button>
+                </section>
+                <section class="information-banner"><div class="information-icon">i</div><div><strong>Histórico de atividades</strong><p id="logs-source-note">Os registros locais ficam neste navegador. Quando o servidor Python estiver ligado, também serão consultados os registros do SQLite local.</p></div></section>
+                <section class="content-panel logs-panel">
+                    <div class="filters-container logs-filters">
+                        <div class="search-field"><label for="logs-search">Pesquisar nos registros</label><div class="input-wrapper"><span class="search-icon">⌕</span><input type="search" id="logs-search" placeholder="Ação, produto, número da venda..." autocomplete="off"></div></div>
+                        <div class="filter-field"><label for="logs-action-filter">Tipo de atividade</label><select id="logs-action-filter"><option value="all">Todas as atividades</option><option value="application_opened">Abertura do sistema</option><option value="backend_started">Servidor Python iniciado</option><option value="product_created">Produto cadastrado</option><option value="product_updated">Produto alterado</option><option value="product_deleted">Produto excluído</option><option value="product_duplicated">Produto duplicado</option><option value="sale_item_added">Item adicionado à venda</option><option value="sale_item_removed">Item removido da venda</option><option value="sale_item_quantity_changed">Quantidade do item alterada</option><option value="sale_item_length_changed">Comprimento do item alterado</option><option value="sale_draft_cleared">Lista da venda limpa</option><option value="sale_finalized">Venda finalizada</option><option value="delivery_contact_saved">Destinatário salvo</option><option value="delivery_created">Entrega cadastrada</option><option value="delivery_updated">Entrega alterada</option><option value="delivery_status_changed">Status de entrega alterado</option><option value="document_print_requested">Impressão solicitada</option><option value="settings_updated">Configurações alteradas</option><option value="database_snapshot_synced">Cópia sincronizada com SQLite</option></select></div>
+                        <div class="filter-field"><label for="logs-date-filter">Data</label><input type="date" id="logs-date-filter"></div>
+                    </div>
+                    <div class="logs-summary"><strong id="logs-count">0 registros</strong><span>Os detalhes exibidos evitam incluir endereço ou telefone de destinatários.</span></div>
+                    <div class="table-container logs-table-wrap"><table class="logs-table"><thead><tr><th>DATA / HORA</th><th>ATIVIDADE</th><th>DETALHES</th><th>ORIGEM</th></tr></thead><tbody id="logs-table-body"></tbody></table></div>
+                    <div class="empty-state logs-empty" id="logs-empty" hidden><strong>Nenhum registro encontrado</strong><span>Experimente alterar os filtros ou realizar alguma atividade no sistema.</span></div>
+                </section>
+            </section>
+
+            <!-- CONFIGURAÇÕES -->
+            <section class="page-view" id="view-settings" hidden>
+                <section class="page-heading"><div><span class="page-eyebrow">SISTEMA / PREFERÊNCIAS</span><h2>Configurações</h2><p>Ajustes básicos do protótipo e dos documentos impressos.</p></div></section>
+                <section class="content-panel settings-panel"><div class="panel-heading"><div><h3>Identificação nos documentos</h3><p>Esses dados são opcionais e aparecem nas vias impressas quando forem preenchidos.</p></div></div>
+                    <form id="settings-form" class="settings-form">
+                        <div class="settings-business-grid">
+                            <div class="form-field"><label for="business-name">Nome da loja</label><input id="business-name" type="text" maxlength="80" placeholder="Ex.: Minha Loja"></div>
+                            <div class="form-field"><label for="business-document">CNPJ / CPF da empresa</label><input id="business-document" type="text" maxlength="30" placeholder="Documento da empresa (opcional)"></div>
+                            <div class="form-field span-2"><label for="business-address">Endereço</label><input id="business-address" type="text" maxlength="120" placeholder="Rua, avenida ou estrada"></div>
+                            <div class="form-field"><label for="business-city">Bairro / cidade</label><input id="business-city" type="text" maxlength="100" placeholder="Ex.: Centro · Ipiaú"></div>
+                            <div class="form-field"><label for="business-phone">Telefone</label><input id="business-phone" type="text" maxlength="40" placeholder="Telefone comercial"></div>
+                            <div class="form-field"><label for="business-whatsapp">WhatsApp</label><input id="business-whatsapp" type="text" maxlength="40" placeholder="WhatsApp comercial"></div>
+                            <div class="form-field"><label for="business-pix">Chave Pix / identificação</label><input id="business-pix" type="text" maxlength="100" placeholder="Opcional"></div>
+                            <div class="form-field span-2"><label for="business-message">Mensagem no rodapé do comprovante</label><input id="business-message" type="text" maxlength="120" placeholder="Mensagem curta ou divulgação (opcional)"></div>
+                        </div>
+                        <div class="settings-note"><strong>Formato de impressão confirmado</strong><p>O papel continua sendo A4, orientação retrato (210 × 297 mm). Cada via ocupa cerca de 100 mm de largura, em uma das metades da folha. Não é papel A5. A via do cliente e a via de entrega usam o mesmo formato vertical.</p></div>
+                        <button class="primary-button" type="submit">Salvar configurações</button>
+                    </form>
+                </section>
+                <section class="information-banner settings-storage-note"><div class="information-icon">i</div><div><strong>Armazenamento desta versão</strong><p>O navegador continua sendo a fonte principal dos dados. Quando o programa é aberto pelo servidor Python, produtos, vendas e destinatários também são enviados ao banco SQLite local como cópia. Isso ainda não representa sincronização entre computadores nem uma operação multiusuário.</p></div></section>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Modal de cadastro e edição -->
+<div class="modal-overlay" id="product-modal" hidden>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <header class="modal-header">
+            <div><span class="page-eyebrow">CATÁLOGO / PRODUTOS</span><h2 id="modal-title">Novo produto</h2><p>Preencha as informações do item.</p></div>
+            <button class="modal-close" type="button" data-close-modal aria-label="Fechar">×</button>
+        </header>
+        <form id="product-form">
+            <input type="hidden" id="product-id">
+            <div class="form-grid">
+                <div class="form-field span-2"><label for="product-name">Nome do produto <span class="required">*</span></label><input id="product-name" name="name" type="text" maxlength="100" placeholder="Ex.: Arroz 5 kg, leite 1 L, detergente..." required></div>
+                <div class="form-field"><label for="product-code">Código interno</label><input id="product-code" name="code" type="text" maxlength="40" placeholder="Gerado automaticamente se vazio"></div>
+                <div class="form-field"><label for="product-reference">Referência (fabricante)</label><input id="product-reference" name="reference" type="text" maxlength="60" placeholder="Ex.: modelo ou referência"></div>
+                <div class="form-field"><label for="product-barcode">Código de barras</label><input id="product-barcode" name="barcode" type="text" maxlength="60" placeholder="EAN ou código informado"></div>
+                <div class="form-field"><label for="product-factory-code">Código de fábrica</label><input id="product-factory-code" name="manufacturerCode" type="text" maxlength="60" placeholder="Código do fabricante"></div>
+                <div class="form-field"><label for="product-category">Classificação</label><select id="product-category" name="category"><option value="uncategorized">Sem categoria</option><option value="food">Mercearia</option><option value="produce">Hortifruti</option><option value="dairy">Frios e laticínios</option><option value="bakery">Padaria</option><option value="beverages">Bebidas</option><option value="frozen">Congelados</option><option value="cleaning">Limpeza</option><option value="personal">Higiene pessoal</option><option value="household">Utilidades</option></select></div>
+                <div class="form-field"><label for="product-subcategory">Subcategoria</label><select id="product-subcategory" name="subcategory"><option value="">Selecione uma subcategoria</option></select></div>
+                <div class="form-field"><label for="product-brand">Marca / fabricante</label><input id="product-brand" name="brand" type="text" maxlength="60" placeholder="Marca, se houver"></div>
+                <div class="form-field"><label for="product-unit">Unidade / forma de cobrança</label><select id="product-unit" name="unit"><option>Unidade</option><option>Pacote</option><option>Caixa</option><option>Garrafa</option><option>Lata</option><option>Sachê</option><option>Bandeja</option><option>Fardo</option><option>Dúzia</option><option>Quilo</option><option>Grama</option><option>Litro</option><option>Mililitro</option></select></div>
+                <div class="form-field" id="area-per-unit-field" hidden><label for="product-area-per-unit">Área por unidade (m²)</label><input id="product-area-per-unit" type="number" min="0" step="0.01" placeholder="Ex.: 1,20"><small class="field-help">Preencha quando cada unidade possuir uma área fixa. Deixe vazio para vender diretamente por m².</small><label for="product-area-unit-label" class="sub-field-label">Nome da unidade física</label><input id="product-area-unit-label" type="text" maxlength="20" placeholder="Ex.: Tela"></div>
+            </div>
+
+            <div class="form-grid form-grid-bottom">
+                <div class="form-field"><label for="product-stock">Quantidade em estoque</label><input id="product-stock" type="number" min="0" step="0.01" placeholder="Deixe vazio se não controlar"></div>
+                <div class="form-field"><label for="product-price-cash" id="product-price-cash-label">Preço à vista (R$)</label><input id="product-price-cash" type="number" min="0" step="0.01" placeholder="0,00"></div>
+                <div class="form-field"><label for="product-price-card" id="product-price-card-label">Preço normal (cartão) (R$)</label><input id="product-price-card" type="number" min="0" step="0.01" placeholder="0,00"></div>
+                <div class="form-field span-2"><label for="product-details">Descrição / observações</label><textarea id="product-details" rows="3" maxlength="500" placeholder="Detalhes, tamanho da embalagem, sabor, marca..."></textarea></div>
+            </div>
+            <div class="modal-footer"><span class="form-note"><span class="required">*</span> Campo obrigatório</span><div class="modal-actions"><button class="secondary-button" type="button" data-close-modal>Cancelar</button><button class="primary-button" type="submit" id="save-product-button">Salvar produto</button></div></div>
+        </form>
+    </section>
+</div>
+
+
+<!-- Confirmação da finalização da venda -->
+<div class="modal-overlay" id="sale-confirm-modal" hidden>
+    <section class="modal-dialog compact-modal" role="dialog" aria-modal="true" aria-labelledby="sale-confirm-title">
+        <header class="modal-header"><div><span class="page-eyebrow">VENDAS / CONFIRMAÇÃO</span><h2 id="sale-confirm-title">Finalizar venda</h2><p>Confira o total e a forma de pagamento antes de concluir.</p></div><button class="modal-close" type="button" data-close-sale-confirm aria-label="Fechar">×</button></header>
+        <div class="confirm-sale-content"><div class="confirm-total"><span>Total</span><strong id="confirm-sale-total">R$ 0,00</strong></div><div id="confirm-sale-breakdown" class="confirm-sale-breakdown"></div><p id="confirm-sale-method">Forma de pagamento: Dinheiro</p><div id="cash-received-area" class="cash-received-area"><label for="cash-received">Valor recebido em dinheiro (R$)</label><input id="cash-received" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ex.: 100,00"><div class="change-preview"><span>Troco</span><strong id="cash-change-preview">R$ 0,00</strong></div><small id="cash-received-hint">Informe quanto o cliente entregou para calcular o troco.</small></div><p class="form-note">Ao confirmar, a venda será salva com um número próprio. Nenhuma impressão será iniciada automaticamente.</p></div>
+        <div class="modal-footer"><span class="form-note">A impressão fica na área “Comprovantes e impressão”.</span><div class="modal-actions"><button class="secondary-button" type="button" data-close-sale-confirm>Voltar</button><button class="primary-button" type="button" id="confirm-finalize-sale">Confirmar e finalizar</button></div></div>
+    </section>
+</div>
+
+<!-- Dados de entrega associados à venda existente -->
+<div class="modal-overlay" id="delivery-modal" hidden>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="delivery-modal-title">
+        <header class="modal-header"><div><span class="page-eyebrow">DOCUMENTOS / VIA DE ENTREGA</span><h2 id="delivery-modal-title">Dados da entrega</h2><p>Os produtos e quantidades serão copiados da venda. Preencha somente os dados necessários para a entrega.</p></div><button class="modal-close" type="button" data-close-delivery-modal aria-label="Fechar">×</button></header>
+        <form id="delivery-form">
+            <input type="hidden" id="delivery-sale-id">
+            <div class="form-grid delivery-form-grid">
+                <div class="form-field span-2"><label for="delivery-contact-select">Destinatário salvo (opcional)</label><select id="delivery-contact-select"><option value="">Preencher dados manualmente</option></select></div>
+                <div class="form-field"><label for="delivery-recipient">Nome de quem vai receber <span class="required">*</span></label><input id="delivery-recipient" type="text" maxlength="100" required placeholder="Nome do destinatário"></div>
+                <div class="form-field"><label for="delivery-phone">Telefone</label><input id="delivery-phone" type="tel" maxlength="30" placeholder="(00) 00000-0000"></div>
+                <div class="form-field span-2"><label for="delivery-street">Rua / endereço <span class="required">*</span></label><input id="delivery-street" type="text" maxlength="120" required placeholder="Nome da rua, estrada ou localidade"></div>
+                <div class="form-field"><label for="delivery-number">Número</label><input id="delivery-number" type="text" maxlength="30" placeholder="Número ou s/n"></div>
+                <div class="form-field"><label for="delivery-neighborhood">Bairro / localidade <span class="required">*</span></label><input id="delivery-neighborhood" type="text" maxlength="80" required placeholder="Bairro ou comunidade"></div>
+                <div class="form-field span-2"><label for="delivery-reference">Ponto de referência</label><input id="delivery-reference" type="text" maxlength="160" placeholder="Ex.: perto da praça, portão azul..."></div>
+                <div class="form-field span-2"><label for="delivery-observations">Observações para o motorista</label><textarea id="delivery-observations" rows="3" maxlength="500" placeholder="Horário, acesso, local para descarregar e outras instruções."></textarea></div>
+            </div>
+            <label class="save-recipient-option"><input type="checkbox" id="save-delivery-contact"><span><strong>Salvar este destinatário para próximas entregas</strong><small>Opcional. Na próxima compra, será possível selecioná-lo para preencher os dados automaticamente.</small></span></label>
+            <div class="modal-footer"><span class="form-note"><span class="required">*</span> Campos obrigatórios</span><div class="modal-actions"><button class="secondary-button" type="button" data-close-delivery-modal>Cancelar</button><button class="primary-button" type="submit">Salvar dados da entrega</button></div></div>
+        </form>
+    </section>
+</div>
+
+<div id="print-root" aria-hidden="true"></div>
+<div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>
